@@ -35,13 +35,34 @@
     <div id="extraText" class="small"></div>
 
     <h3 style="margin-top:14px">Видео</h3>
-    <div class="notice small">Егер видео ашылмаса: YouTube-тан тақырып атауын (genetics basics / Mendel monohybrid / sex-linked inheritance) деп іздеңіз.</div>
-    <iframe id="videoFrame" loading="lazy" referrerpolicy="no-referrer"></iframe>
+    <div class="notice small">
+      Егер видео iframe ішінде ашылмаса — төмендегі батырмамен бөлек ашыңыз (100%).
+    </div>
+
+    <div class="btn-row" style="margin-top:10px">
+      <a class="pill" id="videoOpen" target="_blank" rel="noopener">YouTube видеоны бөлек ашу ↗</a>
+    </div>
+
+    <iframe id="videoFrame" loading="lazy" referrerpolicy="no-referrer"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allowfullscreen></iframe>
+
+    <h3 style="margin-top:16px">Интерактив / Қосымша ресурс (Learn.Genetics)</h3>
+    <div class="notice small">
+      Кейбір мектеп желілерінде сайт iframe-ты жабуы мүмкін. Ондайда “Бөлек ашу” батырмасын басыңыз.
+    </div>
+
+    <div class="btn-row" style="margin-top:10px">
+      <a class="pill" href="https://learn.genetics.utah.edu" target="_blank" rel="noopener">Learn.Genetics-ті бөлек ашу ↗</a>
+    </div>
+
+    <iframe id="learnFrame" loading="lazy" referrerpolicy="no-referrer"
+      src="https://learn.genetics.utah.edu/"></iframe>
   </div>
 
   <div class="card">
     <h3>Тест (рандом 10/20)</h3>
-    <input id="studentName" placeholder="Оқушы аты-жөні"/>
+    <input id="studentName" placeholder="Оқушы аты-жөніңіз"/>
     <div class="btn-row">
       <button class="btn" id="regenBtn" type="button">Қайта генерациялау</button>
       <button class="btn primary" id="checkBtn" type="button">Тексеру</button>
@@ -55,6 +76,18 @@
 </main>
 
 <script>
+/* YouTube short-link → embed */
+function toEmbed(url){
+  // youtu.be/VIDEOID немесе watch?v=VIDEOID → embed/VIDEOID
+  const m1 = url.match(/youtu\.be\/([a-zA-Z0-9_-]+)/);
+  if(m1) return `https://www.youtube.com/embed/${m1[1]}`;
+  const m2 = url.match(/[?&]v=([a-zA-Z0-9_-]+)/);
+  if(m2) return `https://www.youtube.com/embed/${m2[1]}`;
+  // already embed
+  if(url.includes("/embed/")) return url;
+  return url;
+}
+
 /* 9-сынып: 3 тақырыптың деректері */
 const TOPICS = {
   t1: {
@@ -64,7 +97,8 @@ const TOPICS = {
 "Генетика — тұқымқуалаушылық пен өзгергіштікті зерттейтін ғылым. Ген — белгілі бір белгіні анықтайтын ДНҚ бөлігі. Аллель — геннің нұсқасы. Хромосома — ДНҚ оралып орналасқан құрылым, ол ядро ішінде болады. Генотип — ағзаның аллельдер жиынтығы, фенотип — генотип пен ортаның әсерінен қалыптасатын сыртқы/ішкі белгі.",
     extra:
 "Доминант аллель (A) бар болса белгі фенотипте көрінеді. Рецессив (a) белгі тек aa жағдайда көрінеді. Гомозигота: AA немесе aa. Гетерозигота: Aa. Гамета — жыныс жасушасы, онда әр геннің бір аллелі ғана болады.",
-    iframe: "https://www.youtube.com/embed/8m6hHRlKwxY",
+    // СІЗ БЕРГЕН ВИДЕО:
+    iframe: toEmbed("https://youtu.be/UVlgmP7w99Q?si=JpTyq88wEbZzt3hW"),
     bank: [
       {q:"Ген деген не?", options:["ДНҚ бөлігі","Ұлпа","Орган","Жүйе"], correct:0},
       {q:"Аллель деген:", options:["Геннің нұсқасы","Қан жасушасы","Сүйек","Вирус"], correct:0},
@@ -96,6 +130,7 @@ const TOPICS = {
 "Моногибрид будандастыру — бір ғана белгі бойынша тұқымқуалауды зерттеу. Мендельдің I заңы (біркелкілік): AA × aa болса, F1 ұрпақтың бәрі Aa (фенотип доминант). II заңы (ажырау): Aa × Aa болса, F2-де генотип 1AA:2Aa:1aa, фенотип 3:1 (доминант:рецессив).",
     extra:
 "Пеннент торы (Punnett square) — ықтимал генотиптерді табуға көмектеседі. Талдаушы будандастыру: белгісі доминант дара (A?) × aa. Егер ұрпақта рецессив шықса — дара Aa.",
+    // Қалдырдым — ал сіз қаласаңыз бұны да өз видеомен ауыстырам:
     iframe: "https://www.youtube.com/embed/Mehz7tCxjSE",
     bank: [
       {q:"Моногибрид будандастыру деген:", options:["1 белгі бойынша","2 белгі бойынша","3 белгі бойынша","Тек орта"], correct:0},
@@ -127,7 +162,7 @@ const TOPICS = {
     theory:
 "Жыныспен тіркес тұқымқуалау — гендердің жыныс хромосомаларында (X немесе Y) орналасуына байланысты берілуі. Адамда әйел: XX, ер: XY. Кейбір аурулар/белгілер X-хромосомамен тіркеседі, сондықтан ер балаларда жиірек көрінуі мүмкін (ерде бір ғана X бар).",
     extra:
-"Белгі X-рецессив болса: әйел тасымалдаушы болуы мүмкін (XᴬXᵃ), ал ер балада бір X болғандықтан XᵃY болса белгі көрінеді. Мысалдар: дальтонизм, гемофилия (классикалық мысал ретінде жиі айтылады).",
+"Белгі X-рецессив болса: әйел тасымалдаушы болуы мүмкін (XᴬXᵃ), ал ер балада бір X болғандықтан XᵃY болса белгі көрінеді. Мысалдар: дальтонизм, гемофилия.",
     iframe: "https://www.youtube.com/embed/9O7a5q0nT2U",
     bank: [
       {q:"Әйелдің жыныс хромосомасы:", options:["XX","XY","YY","XO"], correct:0},
@@ -154,11 +189,27 @@ const TOPICS = {
   }
 };
 
+function updateVideoButtons(embedUrl){
+  // YouTube видеоны бөлек ашу
+  const m = embedUrl.match(/embed\/([a-zA-Z0-9_-]+)/);
+  const videoId = m ? m[1] : null;
+  document.getElementById("videoOpen").href = videoId
+    ? `https://www.youtube.com/watch?v=${videoId}`
+    : embedUrl;
+
+  // iframe src
+  document.getElementById("videoFrame").src = embedUrl;
+}
+
 function pickTopic(key){
   window.moduleData = TOPICS[key];
-  // app.js функциясы:
+
+  // app.js-дағы функция
   renderTest(window.moduleData);
-  // атауды айқынырақ қыламыз
+
+  // Видео мен батырманы осы тақырыпқа сай жаңарту
+  updateVideoButtons(window.moduleData.iframe);
+
   document.title = `9-сынып • ${window.moduleData.topic}`;
 }
 
