@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="kk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BioMind 5–11</title>
+
+<style>
+:root{
+  --bg:#f7fbff;
+  --card:#ffffff;
+  --primary:#4aa3ff;
+  --primary2:#7bbcff;
+  --text:#17324a;
+  --border:#dbeaff;
+  --radius:18px;
+}
+body{
+  margin:0;
+  font-family:system-ui;
+  background:linear-gradient(180deg,var(--bg),#fff);
+  color:var(--text);
+}
+.container{max-width:1100px;margin:0 auto;padding:30px}
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:20px;
+  margin-bottom:20px;
+}
+button{
+  padding:8px 12px;
+  border:none;
+  border-radius:12px;
+  background:linear-gradient(180deg,var(--primary2),var(--primary));
+  color:white;
+  cursor:pointer;
+  margin:5px;
+}
+input{margin-bottom:10px;padding:6px;width:100%}
+.hidden{display:none}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<div class="card">
+<h1>BioMind 5–11 Биология</h1>
+<select id="gradeSelect" onchange="loadModule()">
+<option value="">Сынып таңдаңыз</option>
+<option value="5">5-сынып</option>
+<option value="6">6-сынып</option>
+<option value="7">7-сынып</option>
+<option value="8">8-сынып</option>
+<option value="9">9-сынып</option>
+<option value="10">10-сынып</option>
+<option value="11">11-сынып</option>
+</select>
+</div>
+
+<div class="card hidden" id="theoryBox">
+<h2>Теория</h2>
+<div id="theoryText"></div>
+</div>
+
+<div class="card hidden" id="testBox">
+<h2>Тест</h2>
+<input id="studentName" placeholder="Аты-жөніңіз">
+<div id="questions"></div>
+<button onclick="checkTest()">Тексеру</button>
+<p id="result"></p>
+<canvas id="chart" width="300" height="150"></canvas>
+</div>
+
+<div class="card hidden" id="teacherBox">
+<h2>Мұғалім бөлімі</h2>
+<table border="1" width="100%">
+<tr><th>Оқушы</th><th>Сынып</th><th>%</th></tr>
+<tbody id="table"></tbody>
+</table>
+<button onclick="clearAll()">Өшіру</button>
+</div>
+
+</div>
+
+<script>
+
+const modules={
+7:{
+theory:`Фотосинтез – жарық энергиясын химиялық энергияға айналдыру процесі.
+Хлоропластта жүреді.
+6CO2 + 6H2O → C6H12O6 + 6O2`,
+questions:[
+"Фотосинтез қайда жүреді?",
+"Формуладағы CO2 нені білдіреді?",
+"Оттегі қай процесте түзіледі?",
+"Жарық не үшін керек?",
+"Глюкоза не үшін керек?",
+"Фотосинтезге әсер ететін 1 фактор?",
+"Су қайдан келеді?",
+"Хлорофилл не істейді?",
+"Фотосинтез қай уақытта жүреді?",
+"Өсімдік не бөледі?",
+"CO2 қайдан келеді?",
+"Энергия қайдан алынады?",
+"Жапырақтың рөлі?",
+"Жарық азайса не болады?",
+"Температура әсері?",
+"Хлоропласт түсі?",
+"Өсімдік не сіңіреді?",
+"Қандай газ жұтылады?",
+"Қандай газ бөлінеді?",
+"Процесс қай ағзада жүреді?"
+]
+}
+};
+
+let currentGrade="";
+let randomSet=[];
+
+function loadModule(){
+currentGrade=document.getElementById("gradeSelect").value;
+if(!modules[currentGrade]) return;
+
+document.getElementById("theoryBox").classList.remove("hidden");
+document.getElementById("testBox").classList.remove("hidden");
+document.getElementById("teacherBox").classList.remove("hidden");
+
+document.getElementById("theoryText").innerText=modules[currentGrade].theory;
+
+generateTest();
+loadTable();
+}
+
+function generateTest(){
+let q=modules[currentGrade].questions;
+randomSet=q.sort(()=>0.5-Math.random()).slice(0,10);
+let html="";
+randomSet.forEach((item,i)=>{
+html+=`<p>${i+1}. ${item}</p><input id="q${i}">`;
+});
+document.getElementById("questions").innerHTML=html;
+}
+
+function checkTest(){
+let score=0;
+for(let i=0;i<randomSet.length;i++){
+let val=document.getElementById("q"+i).value;
+if(val.length>3) score++;
+}
+let percent=Math.round(score/randomSet.length*100);
+document.getElementById("result").innerText="Нәтиже: "+percent+"%";
+
+saveResult(percent);
+drawChart(percent);
+}
+
+function saveResult(percent){
+let data=JSON.parse(localStorage.getItem("bio")||"[]");
+data.push({
+name:studentName.value,
+grade:currentGrade,
+percent:percent
+});
+localStorage.setItem("bio",JSON.stringify(data));
+loadTable();
+}
+
+function loadTable(){
+let data=JSON.parse(localStorage.getItem("bio")||"[]");
+let html="";
+data.forEach(r=>{
+html+=`<tr><td>${r.name}</td><td>${r.grade}</td><td>${r.percent}%</td></tr>`;
+});
+document.getElementById("table").innerHTML=html;
+}
+
+function clearAll(){
+localStorage.removeItem("bio");
+loadTable();
+}
+
+function drawChart(percent){
+let c=document.getElementById("chart");
+let ctx=c.getContext("2d");
+ctx.clearRect(0,0,300,150);
+ctx.fillStyle="#4aa3ff";
+ctx.fillRect(0,150-percent*1.5,50,percent*1.5);
+ctx.fillText(percent+"%",10,140-percent*1.5);
+}
+
+</script>
+
+</body>
+</html>
