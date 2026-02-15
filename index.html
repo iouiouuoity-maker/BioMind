@@ -3,205 +3,26 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>BioMind PRO 5–11</title>
-
+<title>BioMind 5–11</title>
 <style>
-:root{
-  --bg:#f7fbff;
-  --card:#ffffff;
-  --primary:#4aa3ff;
-  --primary2:#7bbcff;
-  --text:#17324a;
-  --border:#dbeaff;
-  --radius:18px;
-}
-body{
-  margin:0;
-  font-family:system-ui;
-  background:linear-gradient(180deg,var(--bg),#fff);
-  color:var(--text);
-}
-.container{max-width:1100px;margin:0 auto;padding:30px}
-.card{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:var(--radius);
-  padding:20px;
-  margin-bottom:20px;
-}
-select,input{padding:8px;width:100%;margin-bottom:10px}
-button{
-  padding:8px 12px;
-  border:none;
-  border-radius:12px;
-  background:linear-gradient(180deg,var(--primary2),var(--primary));
-  color:white;
-  cursor:pointer;
-  margin:5px 0;
-}
-iframe{
-  width:100%;
-  height:300px;
-  border-radius:12px;
-  border:1px solid var(--border);
-  margin-top:10px;
-}
-.hidden{display:none}
-canvas{margin-top:15px}
+body{font-family:system-ui;background:#f7fbff;margin:0;padding:40px}
+.card{background:#fff;padding:30px;border-radius:18px;
+box-shadow:0 10px 25px rgba(0,0,0,.08);max-width:600px;margin:auto;text-align:center}
+a{display:block;margin:10px;padding:10px;
+background:linear-gradient(180deg,#7bbcff,#4aa3ff);
+color:white;text-decoration:none;border-radius:12px}
 </style>
 </head>
-
 <body>
-<div class="container">
-
 <div class="card">
-<h1>BioMind PRO 5–11 Биология</h1>
-<select id="gradeSelect" onchange="loadModule()">
-<option value="">Сынып таңдаңыз</option>
-<option value="5">5-сынып</option>
-<option value="6">6-сынып</option>
-<option value="7">7-сынып</option>
-<option value="8">8-сынып</option>
-<option value="9">9-сынып</option>
-<option value="10">10-сынып</option>
-<option value="11">11-сынып</option>
-</select>
+<h1>BioMind 5–11</h1>
+<a href="grade5.html">5-сынып</a>
+<a href="grade6.html">6-сынып</a>
+<a href="grade7.html">7-сынып</a>
+<a href="grade8.html">8-сынып</a>
+<a href="grade9.html">9-сынып</a>
+<a href="grade10.html">10-сынып</a>
+<a href="grade11.html">11-сынып</a>
 </div>
-
-<div class="card hidden" id="moduleBox">
-<h2 id="moduleTitle"></h2>
-
-<h3>Теория</h3>
-<div id="theory"></div>
-
-<h3>Қосымша ақпарат</h3>
-<div id="extra"></div>
-
-<h3>Интерактив материал</h3>
-<iframe id="frame"></iframe>
-</div>
-
-<div class="card hidden" id="testBox">
-<h3>Тест</h3>
-<input id="studentName" placeholder="Аты-жөніңіз">
-<div id="questions"></div>
-<button onclick="checkTest()">Тексеру</button>
-<p id="result"></p>
-<canvas id="chart" width="300" height="150"></canvas>
-</div>
-
-<div class="card hidden" id="teacherBox">
-<h3>Мұғалім бөлімі</h3>
-<table border="1" width="100%">
-<tr><th>Оқушы</th><th>Сынып</th><th>%</th></tr>
-<tbody id="table"></tbody>
-</table>
-</div>
-
-</div>
-
-<script>
-
-const modules={
-7:{
-title:"7-сынып — Фотосинтез",
-theory:"Фотосинтез – жарық энергиясын химиялық энергияға айналдыру процесі. Хлоропластта жүреді.",
-extra:"6CO2 + 6H2O → C6H12O6 + 6O2. Факторлар: жарық, температура, CO2.",
-frame:"https://www.youtube.com/embed/UPBMG5EYydo",
-questions:[
-{q:"Фотосинтез қайда жүреді?",a:"хлоропласт"},
-{q:"CO2 не?",a:"көмір"},
-{q:"Қандай газ бөлінеді?",a:"оттегі"},
-{q:"Энергия қайдан?",a:"жарық"},
-{q:"Глюкоза не?",a:"энергия"},
-{q:"Су не үшін керек?",a:"реагент"},
-{q:"Жарық азайса?",a:"төмендейді"},
-{q:"Температура әсері?",a:"өзгереді"},
-{q:"Қандай ағза?",a:"өсімдік"},
-{q:"Процесс атауы?",a:"фотосинтез"},
-{q:"Хлорофилл не істейді?",a:"сіңіреді"},
-{q:"CO2 қайдан?",a:"ауа"},
-{q:"Жапырақ рөлі?",a:"негізгі"},
-{q:"Қай уақытта жүреді?",a:"күндіз"},
-{q:"Формуладағы O2?",a:"оттегі"},
-{q:"Нәтиже не?",a:"глюкоза"},
-{q:"Қай органелла?",a:"хлоропласт"},
-{q:"Жарық түсі?",a:"жасыл"},
-{q:"Фактор саны?",a:"3"},
-{q:"Процесс түрі?",a:"химиялық"}
-]
-}
-};
-
-let current="";
-let currentSet=[];
-
-function loadModule(){
-const grade=document.getElementById("gradeSelect").value;
-if(!modules[grade]) return;
-
-current=modules[grade];
-
-document.getElementById("moduleBox").classList.remove("hidden");
-document.getElementById("testBox").classList.remove("hidden");
-document.getElementById("teacherBox").classList.remove("hidden");
-
-moduleTitle.innerText=current.title;
-theory.innerText=current.theory;
-extra.innerText=current.extra;
-frame.src=current.frame;
-
-generateTest();
-loadTable();
-}
-
-function generateTest(){
-currentSet=current.questions.sort(()=>0.5-Math.random()).slice(0,10);
-let html="";
-currentSet.forEach((item,i)=>{
-html+=`<p>${i+1}. ${item.q}</p><input id="q${i}">`;
-});
-questions.innerHTML=html;
-}
-
-function checkTest(){
-let score=0;
-currentSet.forEach((item,i)=>{
-let val=document.getElementById("q"+i).value.toLowerCase();
-if(val.includes(item.a)) score++;
-});
-let percent=Math.round(score/currentSet.length*100);
-result.innerText="Нәтиже: "+percent+"%";
-drawChart(percent);
-saveResult(percent);
-}
-
-function drawChart(percent){
-let c=document.getElementById("chart");
-let ctx=c.getContext("2d");
-ctx.clearRect(0,0,300,150);
-ctx.fillStyle="#4aa3ff";
-ctx.fillRect(0,150-percent*1.5,50,percent*1.5);
-ctx.fillText(percent+"%",5,140-percent*1.5);
-}
-
-function saveResult(percent){
-let data=JSON.parse(localStorage.getItem("bioPro")||"[]");
-data.push({name:studentName.value,grade:current.title,percent:percent});
-localStorage.setItem("bioPro",JSON.stringify(data));
-loadTable();
-}
-
-function loadTable(){
-let data=JSON.parse(localStorage.getItem("bioPro")||"[]");
-let html="";
-data.forEach(r=>{
-html+=`<tr><td>${r.name}</td><td>${r.grade}</td><td>${r.percent}%</td></tr>`;
-});
-table.innerHTML=html;
-}
-
-</script>
-
 </body>
 </html>
