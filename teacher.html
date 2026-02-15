@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="kk">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>BioMind • Мұғалім</title>
+  <link rel="stylesheet" href="assets/style.css"/>
+</head>
+<body>
+<header class="nav">
+  <div class="nav-inner">
+    <div class="brand">
+      <div class="logo"></div>
+      <div>
+        <h1>BioMind • Мұғалім</h1>
+        <small>Нәтижелер (осы браузерде сақталады)</small>
+      </div>
+    </div>
+    <nav class="menu">
+      <a class="pill" href="index.html">Басты бет</a>
+      <a class="pill" href="teacher.html">Мұғалім</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <div class="card">
+    <h2 class="h-title">Нәтижелер</h2>
+    <p class="h-sub">Ескерту: бұл нәтижелер тек осы құрылғы/браузерде сақталады (LocalStorage).</p>
+
+    <div class="btn-row">
+      <button class="btn" id="refreshBtn" type="button">Жаңарту</button>
+      <button class="btn" id="clearBtn" type="button">Барлығын өшіру</button>
+    </div>
+
+    <hr/>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Уақыты</th>
+          <th>Оқушы</th>
+          <th>Сынып</th>
+          <th>Тақырып</th>
+          <th>Нәтиже</th>
+        </tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+
+    <p class="footer">Қажет болса, кейін Excel/Google Sheet экспорт қосып берем.</p>
+  </div>
+</main>
+
+<script src="assets/app.js"></script>
+<script>
+function render(){
+  const data = loadAllResults();
+  const rows = document.getElementById("rows");
+  rows.innerHTML = "";
+  data.forEach(r=>{
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${new Date(r.ts).toLocaleString()}</td>
+      <td>${r.student}</td>
+      <td>${r.grade}</td>
+      <td>${r.topic}</td>
+      <td><b>${r.percent}%</b> (${r.score}/${r.total})</td>
+    `;
+    rows.appendChild(tr);
+  });
+}
+document.getElementById("refreshBtn").onclick = render;
+document.getElementById("clearBtn").onclick = ()=>{
+  if(confirm("Барлық нәтижені өшіреміз бе?")){
+    clearAllResults();
+    render();
+  }
+};
+render();
+</script>
+</body>
+</html>
