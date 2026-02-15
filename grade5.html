@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="kk">
+<head>
+  <meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>5-сынып • Жасуша</title>
+  <link rel="stylesheet" href="assets/style.css"/>
+</head>
+<body>
+<header class="nav">
+  <div class="nav-inner">
+    <div class="brand"><div class="logo"></div><div><h1>BioMind</h1><small>5-сынып • Жасуша</small></div></div>
+    <nav class="menu"><a class="pill" href="index.html">Басты бет</a><a class="pill" href="teacher.html">Мұғалім</a></nav>
+  </div>
+</header>
+
+<main class="container">
+  <div class="card">
+    <h2 class="h-title" id="moduleTitle"></h2>
+    <p class="h-sub">Оқы → видеоны қара → тест (рандом 10) → % нәтиже + график.</p>
+  </div>
+
+  <div class="card">
+    <h3>Теория</h3>
+    <div id="theoryText" class="small"></div>
+    <h3 style="margin-top:14px">Қосымша ақпарат</h3>
+    <div id="extraText" class="small"></div>
+
+    <h3 style="margin-top:14px">Видео</h3>
+    <div class="notice small">Егер видео ашылмаса: YouTube-тан “Cell Structure for Kids” деп іздеңіз.</div>
+    <iframe id="videoFrame" loading="lazy" referrerpolicy="no-referrer"></iframe>
+  </div>
+
+  <div class="card">
+    <h3>Тест (рандом 10/20)</h3>
+    <input id="studentName" placeholder="Оқушы аты-жөні"/>
+    <div class="btn-row">
+      <button class="btn" id="regenBtn" type="button">Қайта генерациялау</button>
+      <button class="btn primary" id="checkBtn" type="button">Тексеру</button>
+    </div>
+    <div id="testArea"></div>
+    <hr/>
+    <div id="resultText"></div>
+    <p class="small" id="afterSaveNote"></p>
+    <canvas id="chartCanvas" width="520" height="180"></canvas>
+  </div>
+</main>
+
+<script>
+window.moduleData = {
+  grade: 5,
+  topic: "Жасуша",
+  theory:
+"Жасуша — тірі ағзалардың ең кіші құрылымдық және қызметтік бірлігі. Жасушаның негізгі бөліктері: жасуша мембранасы (қорғайды және зат алмасуды реттейді), цитоплазма (ішкі орта), ядро (тұқымқуалаушылық ақпарат сақталады).",
+  extra:
+"Өсімдік жасушасында қосымша: жасуша қабырғасы (пішін береді), вакуоль (су/қор зат), хлоропласт (фотосинтез). Жануар жасушасында хлоропласт болмайды. Негізгі идея: құрылым → қызмет.",
+  iframe: "https://www.youtube.com/embed/URUJD5NEXC8",
+  bank: [
+    {q:"Жасуша дегеніміз не?", options:["Орган","Тіршіліктің ең кіші бірлігі","Ұлпа","Жүйе"], correct:1},
+    {q:"Ядроның негізгі қызметі?", options:["Қозғалу","Тұқымқуалаушылық ақпарат сақтау","Ас қорыту","Тыныс алу"], correct:1},
+    {q:"Мембрана не істейді?", options:["Қорғайды және өткізгіштікті реттейді","Қан айдайды","Сүйек түзеді","Жарық бөледі"], correct:0},
+    {q:"Цитоплазма — бұл…", options:["Сыртқы қабық","Ішкі сұйық орта","Тек су","Тек ауа"], correct:1},
+    {q:"Өсімдік жасушасына тән құрылым:", options:["Хлоропласт","Құлақ","Қан тамыры","Жүрек"], correct:0},
+    {q:"Жасуша қабырғасы қайда болады?", options:["Тек жануарда","Өсімдікте","Балықта ғана","Адамда"], correct:1},
+    {q:"Вакуольдің рөлі:", options:["Ақпарат сақтау","Су/қор зат жинау","Қан айналдыру","Дыбыс шығару"], correct:1},
+    {q:"Хлоропласттың қызметі:", options:["Фотосинтез","Тыныс алу","Ас қорыту","Қозғалу"], correct:0},
+    {q:"Жануар жасушасында әдетте болмайды:", options:["Ядро","Цитоплазма","Хлоропласт","Мембрана"], correct:2},
+    {q:"“Құрылым → қызмет” деген:", options:["Кездейсоқтық","Әр бөлік өз қызметіне сай","Тек түс","Тек өлшем"], correct:1},
+    {q:"Жасушалар бірігіп не түзеді?", options:["Ұлпа","Бұлт","Тас","Қала"], correct:0},
+    {q:"Ұлпалар бірігіп не түзеді?", options:["Орган","Қан","Тер","Шаң"], correct:0},
+    {q:"Органдар бірігіп не түзеді?", options:["Жүйе","Сүйек","Шөп","Теңіз"], correct:0},
+    {q:"Мембрана арқылы өтетін процесс:", options:["Зат алмасу","Ұйқы","Жүгіру","Сөйлеу"], correct:0},
+    {q:"Өсімдік жасушасының пішіні жиі…", options:["Тікбұрыштылау","Дөңгелек қана","Үшбұрышты","Жұлдыз"], correct:0},
+    {q:"Ядросыз жасуша мысалы:", options:["Эритроцит (кейде)","Сүйек","Тіс","Шаш"], correct:0},
+    {q:"Жасуша — тіршілік деңгейі:", options:["Организм","Жасушалық","Популяция","Биосфера"], correct:1},
+    {q:"Органелла деген:", options:["Жасуша ішіндегі “кіші мүшелер”","Қала","Құрт","Су"], correct:0},
+    {q:"Митохондрия қызметі:", options:["Энергия түзу","Фотосинтез","Су жинау","Қорғаныс"], correct:0},
+    {q:"Рибосома қызметі:", options:["Ақуыз синтезі","Қан айдау","Жарық сіңіру","Өсу"], correct:0},
+  ]
+};
+</script>
+<script src="assets/app.js"></script>
+<script>renderTest(window.moduleData);</script>
+</body>
+</html>
