@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="kk">
+<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>7-сынып • Фотосинтез</title><link rel="stylesheet" href="assets/style.css"/></head>
+<body>
+<header class="nav"><div class="nav-inner">
+<div class="brand"><div class="logo"></div><div><h1>BioMind</h1><small>7-сынып • Фотосинтез</small></div></div>
+<nav class="menu"><a class="pill" href="index.html">Басты бет</a><a class="pill" href="teacher.html">Мұғалім</a></nav>
+</div></header>
+
+<main class="container">
+  <div class="card"><h2 class="h-title" id="moduleTitle"></h2><p class="h-sub">Формула + факторлар + нәтиже.</p></div>
+  <div class="card">
+    <h3>Теория</h3><div id="theoryText" class="small"></div>
+    <h3 style="margin-top:14px">Қосымша ақпарат</h3><div id="extraText" class="small"></div>
+    <h3 style="margin-top:14px">Видео</h3>
+    <div class="notice small">Егер видео ашылмаса: YouTube-тан “Photosynthesis explained” деп іздеңіз.</div>
+    <iframe id="videoFrame" loading="lazy" referrerpolicy="no-referrer"></iframe>
+  </div>
+
+  <div class="card">
+    <h3>Тест (рандом 10/20)</h3>
+    <input id="studentName" placeholder="Оқушы аты-жөні"/>
+    <div class="btn-row">
+      <button class="btn" id="regenBtn" type="button">Қайта генерациялау</button>
+      <button class="btn primary" id="checkBtn" type="button">Тексеру</button>
+    </div>
+    <div id="testArea"></div>
+    <hr/><div id="resultText"></div><p class="small" id="afterSaveNote"></p>
+    <canvas id="chartCanvas" width="520" height="180"></canvas>
+  </div>
+</main>
+
+<script>
+window.moduleData = {
+  grade: 7,
+  topic: "Фотосинтез",
+  theory:
+"Фотосинтез — жасыл өсімдіктер жарық энергиясын пайдаланып, бейорганикалық заттардан органикалық зат (глюкоза) түзетін процесс. Ол хлоропластта жүреді. Негізгі реагенттер: CO₂ және H₂O.",
+  extra:
+"Жалпы теңдеу: 6CO₂ + 6H₂O → C₆H₁₂O₆ + 6O₂. Факторлар: жарық, температура, CO₂. Жарық өте аз болса — қарқын төмен, белгілі бір деңгейден кейін “шек” болады.",
+  iframe:"https://www.youtube.com/embed/UPBMG5EYydo",
+  bank:[
+    {q:"Фотосинтез қай органеллада жүреді?", options:["Митохондрия","Хлоропласт","Ядро","Вакуоль"], correct:1},
+    {q:"Фотосинтезге қажет газ:", options:["O₂","CO₂","N₂","He"], correct:1},
+    {q:"Фотосинтез нәтижесінде бөлінетін газ:", options:["CO₂","O₂","H₂","N₂"], correct:1},
+    {q:"Жарықтың рөлі:", options:["Энергия көзі","Су көзі","Газ көзі","Тұз көзі"], correct:0},
+    {q:"Глюкоза — бұл:", options:["Минерал","Органикалық зат","Металл","Тек газ"], correct:1},
+    {q:"Су фотосинтезде…", options:["Қажет емес","Реагент","Тек түс береді","Тек дәм"], correct:1},
+    {q:"Факторларға жатады:", options:["Жарық","Дыбыс","Иіс","Салмақ"], correct:0},
+    {q:"Формуладағы CO₂ —", options:["Көмірқышқыл газы","Оттегі","Су","Тұз"], correct:0},
+    {q:"Фотосинтез көбіне қашан жүреді?", options:["Күндіз","Түнде","Тек қыста","Тек жазда"], correct:0},
+    {q:"Хлорофилл не істейді?", options:["Жарықты сіңіреді","Қанды айдайды","Тамақ қорытады","Суды буландырады"], correct:0},
+    {q:"Температура өте төмен болса:", options:["Қарқын төмендейді","Өте өседі","Өзгермейді","Тек түс өзгереді"], correct:0},
+    {q:"Фотосинтез қай ағзада болады?", options:["Өсімдік","Тас","Металл","Шыны"], correct:0},
+    {q:"Формуладағы H₂O —", options:["Су","Оттегі","Қант","Ауа"], correct:0},
+    {q:"Өсімдік CO₂-ны қайдан алады?", options:["Ауадан","Топырақтан ғана","Тастан","Темірден"], correct:0},
+    {q:"Фотосинтездің маңызы:", options:["Оттегі мен қорек түзу","Тек түс беру","Тек су сақтау","Тек қозғалу"], correct:0},
+    {q:"Жапырақтың қызметі:", options:["Негізгі фотосинтез мүшесі","Қан айдау","Есту","Сөйлеу"], correct:0},
+    {q:"CO₂ көбейсе (шекке дейін):", options:["Қарқын артады","Қарқын нөл","Өзгермейді","Тек түс"], correct:0},
+    {q:"Фотосинтез өнімдерінің бірі:", options:["Глюкоза","Құм","Темір","Мұнай"], correct:0},
+    {q:"Дұрыс теңдеу:", options:["6CO₂+6H₂O→C₆H₁₂O₆+6O₂","O₂→CO₂","H₂O→NaCl","CO₂→Fe"], correct:0},
+    {q:"Фотосинтездің жүретін орны:", options:["Хлоропласт","Жүрек","Асқазан","Бүйрек"], correct:0},
+  ]
+};
+</script>
+<script src="assets/app.js"></script>
+<script>renderTest(window.moduleData);</script>
+</body>
+</html>
