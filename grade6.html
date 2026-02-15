@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="kk">
+<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>6-сынып • Ағза жүйелері</title><link rel="stylesheet" href="assets/style.css"/></head>
+<body>
+<header class="nav"><div class="nav-inner">
+<div class="brand"><div class="logo"></div><div><h1>BioMind</h1><small>6-сынып • Ағза жүйелері</small></div></div>
+<nav class="menu"><a class="pill" href="index.html">Басты бет</a><a class="pill" href="teacher.html">Мұғалім</a></nav>
+</div></header>
+
+<main class="container">
+  <div class="card"><h2 class="h-title" id="moduleTitle"></h2><p class="h-sub">Негізгі жүйелер: тыныс алу, қан айналу, ас қорыту.</p></div>
+  <div class="card">
+    <h3>Теория</h3><div id="theoryText" class="small"></div>
+    <h3 style="margin-top:14px">Қосымша ақпарат</h3><div id="extraText" class="small"></div>
+    <h3 style="margin-top:14px">Видео</h3>
+    <div class="notice small">Егер видео ашылмаса: YouTube-тан “Human body systems” деп іздеңіз.</div>
+    <iframe id="videoFrame" loading="lazy" referrerpolicy="no-referrer"></iframe>
+  </div>
+
+  <div class="card">
+    <h3>Тест (рандом 10/20)</h3>
+    <input id="studentName" placeholder="Оқушы аты-жөні"/>
+    <div class="btn-row">
+      <button class="btn" id="regenBtn" type="button">Қайта генерациялау</button>
+      <button class="btn primary" id="checkBtn" type="button">Тексеру</button>
+    </div>
+    <div id="testArea"></div>
+    <hr/><div id="resultText"></div><p class="small" id="afterSaveNote"></p>
+    <canvas id="chartCanvas" width="520" height="180"></canvas>
+  </div>
+</main>
+
+<script>
+window.moduleData = {
+  grade: 6,
+  topic: "Ағза жүйелері",
+  theory:
+"Адам ағзасы мүшелерден тұрады. Мүшелер бірігіп жүйе құрайды. Мысалы: тыныс алу жүйесі (өкпе), қан айналу жүйесі (жүрек, тамырлар), ас қорыту жүйесі (асқазан, ішек). Жүйелер бір-бірімен байланысып жұмыс істейді.",
+  extra:
+"Денсаулық үшін: дұрыс тамақтану, қозғалыс, жеткілікті ұйқы маңызды. Бір жүйедегі бұзылыс екіншісіне әсер етеді: мысалы, өкпе дұрыс жұмыс істемесе — оттегі азаяды, жүрекке күш түседі.",
+  iframe:"https://www.youtube.com/embed/6x3H2XJfK9A",
+  bank:[
+    {q:"Мүшелер бірігіп нені құрайды?", options:["Жасуша","Жүйе","Су","Тас"], correct:1},
+    {q:"Жүрек қай жүйеге жатады?", options:["Тыныс алу","Қан айналу","Ас қорыту","Жүйке"], correct:1},
+    {q:"Өкпенің негізгі қызметі:", options:["Қан айдау","Газ алмасу","Тамақ қорыту","Сүйек өсіру"], correct:1},
+    {q:"Ас қорыту қай мүшеден басталады?", options:["Ауыз","Өкпе","Бүйрек","Жүрек"], correct:0},
+    {q:"Қан тамырларының қызметі:", options:["Дыбыс шығару","Қанды тасымалдау","Жарық сіңіру","Қор жинау"], correct:1},
+    {q:"Оттегі не үшін қажет?", options:["Энергия түзуге","Тек су үшін","Тек өсу үшін","Тек ұйқы үшін"], correct:0},
+    {q:"Тыныс алу жүйесінің мүшесі:", options:["Өкпе","Асқазан","Бауыр","Тері"], correct:0},
+    {q:"Қан айналудың негізгі мүшесі:", options:["Жүрек","Көз","Тіс","Шаш"], correct:0},
+    {q:"Дұрыс әдет:", options:["Ұйқыны азайту","Суды аз ішу","Қозғалыс","Тек тәтті жеу"], correct:2},
+    {q:"Жүйелер байланысы деген:", options:["Бір-біріне әсер етпейді","Бірі жұмыс істесе жеткілікті","Біріне бірінің әсері бар","Тек ауа"], correct:2},
+    {q:"Асқазанның қызметі:", options:["Тамақты қорыту","Қан айдау","Газ алмасу","Көру"], correct:0},
+    {q:"Ішектің қызметі:", options:["Зат сіңіру","Дыбыс","Жарық","Қан жасау"], correct:0},
+    {q:"Денсаулыққа зиян:", options:["Қозғалыс","Ұйқы","Таза ауа","Тұрақты темекі"], correct:3},
+    {q:"Жүйке жүйесі жауап береді:", options:["Басқару, ақпарат","Тек тамақ","Тек ауа","Тек су"], correct:0},
+    {q:"Тері — бұл:", options:["Жабын мүшесі","Сүйек","Өкпе","Асқазан"], correct:0},
+    {q:"Қаңқа жүйесі қызметі:", options:["Тірек, қорғаныс","Тек тыныс","Тек ас","Тек көру"], correct:0},
+    {q:"Бұлшықет жүйесі:", options:["Қимыл","Тек ұйқы","Тек есту","Тек иіс"], correct:0},
+    {q:"Қанның бір қызметі:", options:["Тасымалдау","Жарық бөлу","Тек түс беру","Тек шаш өсіру"], correct:0},
+    {q:"Жүрек соғысы жиілейді, егер:", options:["Жүгірсең","Ұйықтасаң","Отырсаң","Сурет салсаң"], correct:0},
+    {q:"Дұрыс тамақтану:", options:["Тек газировка","Теңгерімді ас","Тек чипсы","Тек тәтті"], correct:1},
+  ]
+};
+</script>
+<script src="assets/app.js"></script>
+<script>renderTest(window.moduleData);</script>
+</body>
+</html>
