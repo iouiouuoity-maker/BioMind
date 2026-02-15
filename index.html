@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>BioMind 5–11</title>
+<title>BioMind PRO 5–11</title>
 
 <style>
 :root{
@@ -29,6 +29,7 @@ body{
   padding:20px;
   margin-bottom:20px;
 }
+select,input{padding:8px;width:100%;margin-bottom:10px}
 button{
   padding:8px 12px;
   border:none;
@@ -36,10 +37,17 @@ button{
   background:linear-gradient(180deg,var(--primary2),var(--primary));
   color:white;
   cursor:pointer;
-  margin:5px;
+  margin:5px 0;
 }
-input{margin-bottom:10px;padding:6px;width:100%}
+iframe{
+  width:100%;
+  height:300px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  margin-top:10px;
+}
 .hidden{display:none}
+canvas{margin-top:15px}
 </style>
 </head>
 
@@ -47,7 +55,7 @@ input{margin-bottom:10px;padding:6px;width:100%}
 <div class="container">
 
 <div class="card">
-<h1>BioMind 5–11 Биология</h1>
+<h1>BioMind PRO 5–11 Биология</h1>
 <select id="gradeSelect" onchange="loadModule()">
 <option value="">Сынып таңдаңыз</option>
 <option value="5">5-сынып</option>
@@ -60,13 +68,21 @@ input{margin-bottom:10px;padding:6px;width:100%}
 </select>
 </div>
 
-<div class="card hidden" id="theoryBox">
-<h2>Теория</h2>
-<div id="theoryText"></div>
+<div class="card hidden" id="moduleBox">
+<h2 id="moduleTitle"></h2>
+
+<h3>Теория</h3>
+<div id="theory"></div>
+
+<h3>Қосымша ақпарат</h3>
+<div id="extra"></div>
+
+<h3>Интерактив материал</h3>
+<iframe id="frame"></iframe>
 </div>
 
 <div class="card hidden" id="testBox">
-<h2>Тест</h2>
+<h3>Тест</h3>
 <input id="studentName" placeholder="Аты-жөніңіз">
 <div id="questions"></div>
 <button onclick="checkTest()">Тексеру</button>
@@ -75,12 +91,11 @@ input{margin-bottom:10px;padding:6px;width:100%}
 </div>
 
 <div class="card hidden" id="teacherBox">
-<h2>Мұғалім бөлімі</h2>
+<h3>Мұғалім бөлімі</h3>
 <table border="1" width="100%">
 <tr><th>Оқушы</th><th>Сынып</th><th>%</th></tr>
 <tbody id="table"></tbody>
 </table>
-<button onclick="clearAll()">Өшіру</button>
 </div>
 
 </div>
@@ -89,97 +104,76 @@ input{margin-bottom:10px;padding:6px;width:100%}
 
 const modules={
 7:{
-theory:`Фотосинтез – жарық энергиясын химиялық энергияға айналдыру процесі.
-Хлоропластта жүреді.
-6CO2 + 6H2O → C6H12O6 + 6O2`,
+title:"7-сынып — Фотосинтез",
+theory:"Фотосинтез – жарық энергиясын химиялық энергияға айналдыру процесі. Хлоропластта жүреді.",
+extra:"6CO2 + 6H2O → C6H12O6 + 6O2. Факторлар: жарық, температура, CO2.",
+frame:"https://www.youtube.com/embed/UPBMG5EYydo",
 questions:[
-"Фотосинтез қайда жүреді?",
-"Формуладағы CO2 нені білдіреді?",
-"Оттегі қай процесте түзіледі?",
-"Жарық не үшін керек?",
-"Глюкоза не үшін керек?",
-"Фотосинтезге әсер ететін 1 фактор?",
-"Су қайдан келеді?",
-"Хлорофилл не істейді?",
-"Фотосинтез қай уақытта жүреді?",
-"Өсімдік не бөледі?",
-"CO2 қайдан келеді?",
-"Энергия қайдан алынады?",
-"Жапырақтың рөлі?",
-"Жарық азайса не болады?",
-"Температура әсері?",
-"Хлоропласт түсі?",
-"Өсімдік не сіңіреді?",
-"Қандай газ жұтылады?",
-"Қандай газ бөлінеді?",
-"Процесс қай ағзада жүреді?"
+{q:"Фотосинтез қайда жүреді?",a:"хлоропласт"},
+{q:"CO2 не?",a:"көмір"},
+{q:"Қандай газ бөлінеді?",a:"оттегі"},
+{q:"Энергия қайдан?",a:"жарық"},
+{q:"Глюкоза не?",a:"энергия"},
+{q:"Су не үшін керек?",a:"реагент"},
+{q:"Жарық азайса?",a:"төмендейді"},
+{q:"Температура әсері?",a:"өзгереді"},
+{q:"Қандай ағза?",a:"өсімдік"},
+{q:"Процесс атауы?",a:"фотосинтез"},
+{q:"Хлорофилл не істейді?",a:"сіңіреді"},
+{q:"CO2 қайдан?",a:"ауа"},
+{q:"Жапырақ рөлі?",a:"негізгі"},
+{q:"Қай уақытта жүреді?",a:"күндіз"},
+{q:"Формуладағы O2?",a:"оттегі"},
+{q:"Нәтиже не?",a:"глюкоза"},
+{q:"Қай органелла?",a:"хлоропласт"},
+{q:"Жарық түсі?",a:"жасыл"},
+{q:"Фактор саны?",a:"3"},
+{q:"Процесс түрі?",a:"химиялық"}
 ]
 }
 };
 
-let currentGrade="";
-let randomSet=[];
+let current="";
+let currentSet=[];
 
 function loadModule(){
-currentGrade=document.getElementById("gradeSelect").value;
-if(!modules[currentGrade]) return;
+const grade=document.getElementById("gradeSelect").value;
+if(!modules[grade]) return;
 
-document.getElementById("theoryBox").classList.remove("hidden");
+current=modules[grade];
+
+document.getElementById("moduleBox").classList.remove("hidden");
 document.getElementById("testBox").classList.remove("hidden");
 document.getElementById("teacherBox").classList.remove("hidden");
 
-document.getElementById("theoryText").innerText=modules[currentGrade].theory;
+moduleTitle.innerText=current.title;
+theory.innerText=current.theory;
+extra.innerText=current.extra;
+frame.src=current.frame;
 
 generateTest();
 loadTable();
 }
 
 function generateTest(){
-let q=modules[currentGrade].questions;
-randomSet=q.sort(()=>0.5-Math.random()).slice(0,10);
+currentSet=current.questions.sort(()=>0.5-Math.random()).slice(0,10);
 let html="";
-randomSet.forEach((item,i)=>{
-html+=`<p>${i+1}. ${item}</p><input id="q${i}">`;
+currentSet.forEach((item,i)=>{
+html+=`<p>${i+1}. ${item.q}</p><input id="q${i}">`;
 });
-document.getElementById("questions").innerHTML=html;
+questions.innerHTML=html;
 }
 
 function checkTest(){
 let score=0;
-for(let i=0;i<randomSet.length;i++){
-let val=document.getElementById("q"+i).value;
-if(val.length>3) score++;
-}
-let percent=Math.round(score/randomSet.length*100);
-document.getElementById("result").innerText="Нәтиже: "+percent+"%";
-
-saveResult(percent);
+currentSet.forEach((item,i)=>{
+let val=document.getElementById("q"+i).value.toLowerCase();
+if(val.includes(item.a)) score++;
+});
+let percent=Math.round(score/currentSet.length*100);
+result.innerText="Нәтиже: "+percent+"%";
 drawChart(percent);
-}
-
-function saveResult(percent){
-let data=JSON.parse(localStorage.getItem("bio")||"[]");
-data.push({
-name:studentName.value,
-grade:currentGrade,
-percent:percent
-});
-localStorage.setItem("bio",JSON.stringify(data));
-loadTable();
-}
-
-function loadTable(){
-let data=JSON.parse(localStorage.getItem("bio")||"[]");
-let html="";
-data.forEach(r=>{
-html+=`<tr><td>${r.name}</td><td>${r.grade}</td><td>${r.percent}%</td></tr>`;
-});
-document.getElementById("table").innerHTML=html;
-}
-
-function clearAll(){
-localStorage.removeItem("bio");
-loadTable();
+saveResult(percent);
 }
 
 function drawChart(percent){
@@ -188,7 +182,23 @@ let ctx=c.getContext("2d");
 ctx.clearRect(0,0,300,150);
 ctx.fillStyle="#4aa3ff";
 ctx.fillRect(0,150-percent*1.5,50,percent*1.5);
-ctx.fillText(percent+"%",10,140-percent*1.5);
+ctx.fillText(percent+"%",5,140-percent*1.5);
+}
+
+function saveResult(percent){
+let data=JSON.parse(localStorage.getItem("bioPro")||"[]");
+data.push({name:studentName.value,grade:current.title,percent:percent});
+localStorage.setItem("bioPro",JSON.stringify(data));
+loadTable();
+}
+
+function loadTable(){
+let data=JSON.parse(localStorage.getItem("bioPro")||"[]");
+let html="";
+data.forEach(r=>{
+html+=`<tr><td>${r.name}</td><td>${r.grade}</td><td>${r.percent}%</td></tr>`;
+});
+table.innerHTML=html;
 }
 
 </script>
