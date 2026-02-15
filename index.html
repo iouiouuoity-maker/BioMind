@@ -1,28 +1,45 @@
 <!doctype html>
 <html lang="kk">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>BioMind 5–11</title>
-<style>
-body{font-family:system-ui;background:#f7fbff;margin:0;padding:40px}
-.card{background:#fff;padding:30px;border-radius:18px;
-box-shadow:0 10px 25px rgba(0,0,0,.08);max-width:600px;margin:auto;text-align:center}
-a{display:block;margin:10px;padding:10px;
-background:linear-gradient(180deg,#7bbcff,#4aa3ff);
-color:white;text-decoration:none;border-radius:12px}
-</style>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>BioMind 5–11</title>
+  <link rel="stylesheet" href="assets/style.css"/>
 </head>
 <body>
-<div class="card">
-<h1>BioMind 5–11</h1>
-<a href="grade5.html">5-сынып</a>
-<a href="grade6.html">6-сынып</a>
-<a href="grade7.html">7-сынып</a>
-<a href="grade8.html">8-сынып</a>
-<a href="grade9.html">9-сынып</a>
-<a href="grade10.html">10-сынып</a>
-<a href="grade11.html">11-сынып</a>
-</div>
+<header class="nav">
+  <div class="nav-inner">
+    <div class="brand">
+      <div class="logo"></div>
+      <div>
+        <h1>BioMind 5–11</h1>
+        <small>Жалгасова Айман Джалилқызы • Биология</small>
+      </div>
+    </div>
+    <nav class="menu">
+      <a class="pill" href="index.html">Басты бет</a>
+      <a class="pill" href="teacher.html">Мұғалім</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <div class="card">
+    <h2 class="h-title">Сынып таңдаңыз</h2>
+    <p class="h-sub">Әр бетте: теория + қосымша ақпарат + iframe видео + 20 сұрақ банкі → рандом 10 тест → % және график.</p>
+
+    <div class="grid">
+      <a class="card item" href="grade5.html"><h3>5-сынып</h3><p>Жасуша және тіршілік негіздері</p></a>
+      <a class="card item" href="grade6.html"><h3>6-сынып</h3><p>Адам ағзасының жүйелері</p></a>
+      <a class="card item" href="grade7.html"><h3>7-сынып</h3><p>Фотосинтез</p></a>
+      <a class="card item" href="grade8.html"><h3>8-сынып</h3><p>Тыныс алу және энергия</p></a>
+      <a class="card item" href="grade9.html"><h3>9-сынып</h3><p>Генетика</p></a>
+      <a class="card item" href="grade10.html"><h3>10-сынып</h3><p>Эволюция</p></a>
+      <a class="card item" href="grade11.html"><h3>11-сынып</h3><p>Экология</p></a>
+    </div>
+
+    <p class="footer">GitHub Pages үшін: осы папканы репозиторийге жүктеп, Pages қосасыз.</p>
+  </div>
+</main>
 </body>
 </html>
