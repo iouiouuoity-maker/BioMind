@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="kk">
+<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>8-сынып • Тыныс алу</title><link rel="stylesheet" href="assets/style.css"/></head>
+<body>
+<header class="nav"><div class="nav-inner">
+<div class="brand"><div class="logo"></div><div><h1>BioMind</h1><small>8-сынып • Тыныс алу</small></div></div>
+<nav class="menu"><a class="pill" href="index.html">Басты бет</a><a class="pill" href="teacher.html">Мұғалім</a></nav>
+</div></header>
+
+<main class="container">
+  <div class="card"><h2 class="h-title" id="moduleTitle"></h2><p class="h-sub">Энергия алу, митохондрия, оттегі рөлі.</p></div>
+  <div class="card">
+    <h3>Теория</h3><div id="theoryText" class="small"></div>
+    <h3 style="margin-top:14px">Қосымша ақпарат</h3><div id="extraText" class="small"></div>
+    <h3 style="margin-top:14px">Видео</h3>
+    <div class="notice small">Егер видео ашылмаса: YouTube-тан “Cellular respiration” деп іздеңіз.</div>
+    <iframe id="videoFrame" loading="lazy" referrerpolicy="no-referrer"></iframe>
+  </div>
+
+  <div class="card">
+    <h3>Тест (рандом 10/20)</h3>
+    <input id="studentName" placeholder="Оқушы аты-жөні"/>
+    <div class="btn-row">
+      <button class="btn" id="regenBtn" type="button">Қайта генерациялау</button>
+      <button class="btn primary" id="checkBtn" type="button">Тексеру</button>
+    </div>
+    <div id="testArea"></div>
+    <hr/><div id="resultText"></div><p class="small" id="afterSaveNote"></p>
+    <canvas id="chartCanvas" width="520" height="180"></canvas>
+  </div>
+</main>
+
+<script>
+window.moduleData = {
+  grade: 8,
+  topic: "Тыныс алу",
+  theory:
+"Жасушалық тыныс алу — органикалық заттардың (глюкоза) ыдырауы арқылы энергия (АТФ) түзілу процесі. Көп бөлігі митохондрияда жүреді. Оттегі — энергия тиімді алынуына қажет.",
+  extra:
+"Жалпы түрде: глюкоза + O₂ → CO₂ + H₂O + энергия (АТФ). Оттегі жетіспесе — энергия аз, шаршау күшейеді. Тыныс алу мен фотосинтез — бір-біріне кері процестер сияқты.",
+  iframe:"https://www.youtube.com/embed/Ga5Y4uRkQxE",
+  bank:[
+    {q:"Жасушалық тыныс алу нәтижесі:", options:["АТФ энергиясы","Тек су","Тек тұз","Тек темір"], correct:0},
+    {q:"Негізгі орын:", options:["Митохондрия","Хлоропласт","Ядро","Вакуоль"], correct:0},
+    {q:"Тыныс алуға қажет газ:", options:["O₂","CO₂","He","Ar"], correct:0},
+    {q:"Өнімдерінің бірі:", options:["CO₂","NaCl","Fe","Құм"], correct:0},
+    {q:"Оттегі аз болса:", options:["Энергия азаяды","Энергия өседі","Өзгермейді","Тек түс"], correct:0},
+    {q:"АТФ — бұл:", options:["Энергия тасымалдаушы молекула","Су","Газ","Минерал"], correct:0},
+    {q:"Тыныс алу мен фотосинтез байланысы:", options:["Бірі өнімін бірі қолданады","Қатысы жоқ","Тек қыста","Тек суда"], correct:0},
+    {q:"Глюкоза тыныс алуда…", options:["Ыдырайды","Түзілмейді","Тасқа айналады","Жоғалады"], correct:0},
+    {q:"CO₂ ағзадан қалай шығады?", options:["Дем шығару","Тері түсі","Шаш","Тырнақ"], correct:0},
+    {q:"Су тыныс алуда…", options:["Өнім болуы мүмкін","Әрқашан тұз","Металл","Тек ауа"], correct:0},
+    {q:"Энергия көп қажет кезде:", options:["Тыныс жиілейді","Тыныс тоқтайды","Ұйқы","Жылау"], correct:0},
+    {q:"Митохондрия саны көп болады:", options:["Энергия қажет жасушада","Таста","Шыныда","Қағазда"], correct:0},
+    {q:"Тыныс алу процесі:", options:["Катаболизм","Тек түс","Тек дыбыс","Тек иіс"], correct:0},
+    {q:"O₂ қызметі:", options:["Тотығуды қамтамасыз ету","Тек су жасау","Тек қант","Тек тұз"], correct:0},
+    {q:"Нәтиже:", options:["Энергия + CO₂ + H₂O","Тек O₂","Тек CO₂","Тек H₂"], correct:0},
+    {q:"Фотосинтез қайда жүреді?", options:["Хлоропласт","Митохондрия","Жүрек","Өкпе"], correct:0},
+    {q:"Тыныс алу қайда жүреді?", options:["Барлық тірі жасушада","Тек жапырақта","Тек тісте","Тек сүйекте"], correct:0},
+    {q:"Дұрыс жұп:", options:["Фотосинтез-O₂ бөледі; тыныс алу-CO₂ бөледі","Екеуі де O₂ бөледі","Екеуі де CO₂ жұтады","Екеуі де жоқ"], correct:0},
+    {q:"Оттегі ағзаға кіреді:", options:["Дем алу арқылы","Асқазан арқылы","Шаш арқылы","Тырнақ арқылы"], correct:0},
+    {q:"Энергия не үшін керек?", options:["Жұмыс, өсу, қозғалыс","Тек түс","Тек дыбыс","Тек иіс"], correct:0},
+  ]
+};
+</script>
+<script src="assets/app.js"></script>
+<script>renderTest(window.moduleData);</script>
+</body>
+</html>
